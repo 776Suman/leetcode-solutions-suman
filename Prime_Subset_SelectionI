@@ -1,0 +1,32 @@
+/**
+ * @param {number} n
+ * @param {number} s
+ * @return {number[]}
+ */
+var maxPrimes = function(n, s) {
+    const isPrime = (num) => {
+        if(num < 2)
+            return false;
+        for(let j =2; j * j <= num;j++){
+            if(num %j === 0){
+                return false;
+            }
+        }
+        return true;
+    };
+    let result =[];
+    let sum = 0;
+    for(let i = 2; i <= n; i++)
+        {
+            if(isPrime(i)){
+                if(sum + i <= s){
+                    result.push(i);
+                    sum += i;
+                    
+                }else{
+                    break;
+                }
+            }
+        }
+    return result;
+};
