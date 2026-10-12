@@ -1,0 +1,65 @@
+/**
+ * @param {number} n
+ */
+var BusBooking = function(n) {
+    this.booked = new Set();
+    this.time = new Map();
+    this.total = 0;
+};
+function adjacentMiddle(seat){
+    const col = seat[0];
+        const row = seat.slice(1);
+    if (col === 'A') return 'B' + row;
+    if (col === 'D') return 'C' + row;
+    return null;
+}
+
+/** 
+ * @param {string} seat
+ * @return {void}
+ */
+BusBooking.prototype.toggle = function(seat) {
+    if(this.booked.has(seat)){
+        this.booked.delete(seat);
+        this.total -= this.time.get(seat);
+        this.time.delete(seat);
+        return;
+    }
+    let cost =1;
+    const col = seat[0];
+    if(col === 'A' || col === 'D'){
+        const mid = adjacentMiddle(seat);
+        if(this.booked.has(mid)){
+            cost = 3;
+        }
+    }
+    this.booked.add(seat);
+    this.time.set(seat, cost);
+    this.total += cost;
+};
+
+/**
+ * @return {number}
+ */
+BusBooking.prototype.getTotalTime = function() {
+  return this.total;
+};
+
+/**
+ * @return {number}
+ */
+BusBooking.prototype.getMinTime = function() {
+   let cnt = 0;
+    for(const seat of this.booked){
+        cnt++;
+    }
+    return cnt;
+};
+
+/** 
+ * Your BusBooking object will be instantiated and called as such:
+ * var obj = new BusBooking(n)
+ * obj.toggle(seat)
+ * var param_2 = obj.getTotalTime()
+ * var param_3 = obj.getMinTime()
+ */
